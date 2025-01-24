@@ -1,0 +1,58 @@
+{% extends 'search_app/base.html' %}
+
+{% block content %}
+
+{% load static %}
+
+<head>
+    <title>商品比較_結果</title>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ product1.name }}と{{ product2.name }}の比較</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="h-50">
+                        {% if product1.image %}
+                            <img src="{{ product1.image.url }}" class="card-img-topfixed-height" alt="{{ product1.name }}">
+                        {% else %}
+                            <img src="{% static 'images/image.jpg' %}" class="card-img-topfixed-height" alt="No image available">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product1.name }}</h5>
+                            <p class="card-text">{{ product1.description }}</p>
+                            <p class="card-text">価格: {{ product1.price }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="h-50">
+                        {% if product2.image %}
+                            <img src="{{ product2.image.url }}" class="card-img-topfixed-height" alt="{{ product2.name }}">
+                        {% else %}
+                            <img src="{% static 'images/image.jpg' %}" class="card-img-topfixed-height" alt="No image available">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product2.name }}</h5>
+                            <p class="card-text">{{ product2.description }}</p>
+                            <p class="card-text">価格: {{ product2.price }}</p>
+                        </div>
+                    </div>    
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<style>
+    .fixed-height {
+        height: 40%; /* 必要に応じて高さを調整してください */
+        object-fit: cover; /* 画像を枠にフィットさせる */
+    }
+</style>
+
+
+{% endblock  %}

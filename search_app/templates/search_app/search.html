@@ -1,0 +1,95 @@
+{% extends './base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+<div class="container mt-4">
+    <!-- 検索フォームを展開するためのボタン -->
+    <button class="mb-4 text-dark btn btn-light boder border-dark" type="button" data-bs-toggle="collapse" data-bs-target="#searchForm" aria-expanded="false" aria-controls="searchForm">
+        検索オプション
+    </button>
+
+    <!-- 検索フォーム -->
+    <div class="collapse mt-3" id="searchForm">
+        <form method="get">
+            <!-- 検索キーワード入力 -->
+            {{ form.as_p }}
+
+            <!-- カテゴリの選択 -->
+            <!-- <label for="category">カテゴリ:</label>
+            <select name="category" id="category" class="form-select">
+                <option value="">すべて</option>
+                <option value="本">本</option>
+                <option value="電子機器">電子機器</option>
+            </select> -->
+
+            <!-- 価格範囲の入力 -->
+            <label for="min_price">最低価格:</label>
+            <input type="number" name="min_price" id="min_price" min="0" class="form-control">
+            <label for="max_price">最高価格:</label>
+            <input type="number" name="max_price" id="max_price" min="0" class="form-control">
+
+            <!-- 並び替えの選択 -->
+            <label for="sort">並び替え:</label>
+            <select name="sort" id="sort" class="form-select">
+                <option value="name">名前順</option>
+                <option value="price_asc">価格が安い順</option>
+                <option value="price_desc">価格が高い順</option>
+            </select>
+            <button type="submit" class="btn btn-light text-dark border border-dark mt-2">検索</button>
+        </form>
+    </div>
+
+
+   <div class="pagination m-2">
+    <span class="step-links">
+    {% if page_obj.has_previous %}
+    <a href="?page=1" class="btn btn-light btn-sm border border-dark">最初</a> <!-- 最初のページへのリンク -->
+   <!-- 前のページへのリンク -->
+    <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-light btn-sm border border-dark">前へ</a>
+    {% endif %}
+    <span class="current">
+    ページ {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+    </span>
+    {% if page_obj.has_next %}
+   <!-- 次のページへのリンク -->
+    <a href="?page={{ page_obj.next_page_number }}" class="btn btn-light btn-sm border border-dark">次へ</a> 
+   <!-- 最後のページへのリンク -->
+    <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-light btn-sm border border-dark">最後</a>
+    {% endif %}
+    </span>
+   </div>
+      
+    <div class="w-85 border rounded border-dark">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 m-2">
+        {% for product in page_obj %}
+        <div class="col">
+            <div class="border rounded border-dark w-20 m-1 p-2 ">
+            <a href="{% url 'search_app:product_detail' product.id %}" class="class=card text-decoration-none text-dark">
+                <div class="card-title">
+                {{ product.name }}
+                </div>
+                <div class="card-body">
+                        <div class="productimages">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" width="50%" class=" m-1 border rounded border-light">
+                        {% else %}
+                            <img src="{% static 'images/image.jpg' %}" alt="No image available" width="50%" class="m-1 border rounded border-light">
+                        {% endif %}
+                        </div>
+                    価格-{{ product.price }}
+                </div>
+            </a>
+            </div>
+        </div>
+        {% empty %}
+            No results found
+        {% endfor %}
+        </div>
+    </div>
+
+</div>
+    
+{% endblock %}

@@ -1,0 +1,125 @@
+{% extends './base.html' %}
+
+{% block content %}
+
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>商品詳細</title>
+		<!-- Bootstrap CSS -->
+		<link href="https://cdn.jsdelivr.net/npm
+		/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+		<!-- カスタム CSS -->
+		<link rel="stylesheet" href="/static/styles.css">
+	</head>
+
+	<body>
+
+		<div class="container mt-5">
+			<div class="row justify-content-center">
+				<div class="col-md-8">
+					<!-- 商品詳細カード -->
+					<div class="card shadow-sm">
+						<div class="card-body">
+							<h2 class="card-title">{{ product.name }}</h2>
+							<div class="productimages">
+								{% if product.image %}
+									<img src="{{ product.image.url }}" alt="{{ product.name }}" width="70%">
+								{% else %}
+									<img src="{% static 'images/image.jpg' %}" alt="No image available" width="70%">
+								{% endif %}
+							</div>
+							<p class="card-text">{{ product.description }}</p>
+							<p class="card-text"><strong>{{ product.price|floatformat:0|intcomma }}円</strong></p>
+
+
+							<!-- ボタンの配置 -->
+
+							{% if request.user.is_authenticated %}
+								<form action="{% url 'search_app:favorite_product' product.id %}" method="POST" >
+									{% csrf_token %}
+									{% if product in user.favorite_place.all %}
+									<button type="submit" class="btn btn-primary">お気に入りから削除</button>
+									{% else %}
+									<button type="submit" class="btn btn-primary">お気に入りに追加</button>
+									{% endif %}
+								</form>
+							{% endif %}
+
+							<div class="d-flex justify-content-between mt-4">
+								<a href="{% url 'search_app:search_view' %}" class="btn btn-primary">商品一覧に戻る</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			
+
+				<div class="d-flex flex-column justify-content-center align-items-center my-5">
+					<h3>閲覧中の商品と同じカテゴリの商品です</h3><br>
+					<div id="carouselExample" class="carousel slide w-50" >
+					<!-- <div id="carouselExample" class="carousel slide" style="max-width: 600px;"> -->
+						<div class="carousel-inner">
+							<div class="carousel-item active">
+								<a href="{% url 'search_app:product_detail' product.id %}" class="card text-decoration-none text-dark">
+									<div class="card-title">
+										{{ recommendedfirst.name }}
+									</div>
+									<div class="card-body">
+										<div class="productimages">
+											{% if recommendedfirst.image %}
+												<img src="{{ recommendedfirst.image.url }}" alt="{{ recommendedfirst.name }}" width="50%" class="m-1 border rounded border-light">
+											{% else %}
+												<img src="{% static 'images/image.jpg' %}" alt="No image available" width="50%" class="m-1 border rounded border-light">
+											{% endif %}
+										</div>
+										価格-{{ recommendedfirst.price }}
+									</div>
+								</a>
+							</div>
+							{% for recommendedproduct in recommendedlist %}
+							<div class="carousel-item">
+								<a href="{% url 'search_app:product_detail' product.id %}" class="card text-decoration-none text-dark">
+									<div class="card-title">
+										{{ recommendedproduct.name }}
+									</div>
+									<div class="card-body">
+										<div class="productimages">
+											{% if recommendedproduct.image %}
+												<img src="{{ recommendedproduct.image.url }}" alt="{{ recommendedfirst.name }}" width="50%" class="m-1 border rounded border-light">
+											{% else %}
+												<img src="{% static 'images/image.jpg' %}" alt="No image available" width="50%" class="m-1 border rounded border-light">
+											{% endif %}
+										</div>
+										価格-{{ recommendedproduct.price }}
+									</div>
+								</a>
+							</div>
+							{% endfor %}
+						</div>
+						<button class="carousel-control-prev btn btn-light" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+							<span class="carousel-control-prev-icon bg-dark" aria-hidden="true"></span>
+							<span class="visually-hidden">Previous</span>
+						</button>
+						<button class="carousel-control-next btn btn-light" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+							<span class="carousel-control-next-icon bg-dark" aria-hidden="true"></span>
+							<span class="visually-hidden">Next</span>
+						</button>
+					</div>
+				</div>
+
+
+
+			</div>
+		</div>
+		<!-- Bootstrap JS -->
+		<script src="https://cdn.jsdelivr.net/npm
+		/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+	</body>
+</html>
+
+{% endblock %}

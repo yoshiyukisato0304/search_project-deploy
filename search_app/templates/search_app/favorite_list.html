@@ -1,0 +1,42 @@
+{% extends "search_app/base.html" %}
+
+{% load static %}
+
+{% block content %}
+<h1>お気に入りの製品</h1>
+{% if favorite_products %}
+    <ul>
+        
+        <div class="w-85 border rounded border-dark">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 m-2">
+            {% for product in favorite_products %}
+            <div class="col">
+                <div class="border rounded border-dark w-20 m-1 p-2 ">
+                <a href="{% url 'search_app:product_detail' product.id %}" class="class=card text-decoration-none text-dark">
+                    <div class="card-title">
+                    {{ product.name }}
+                    </div>
+                    <div class="card-body">
+                            <div class="productimages">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" width="50%" class=" m-1 border rounded border-light">
+                            {% else %}
+                                <img src="{% static 'images/image.jpg' %}" alt="No image available" width="50%" class="m-1 border rounded border-light">
+                            {% endif %}
+                            </div>
+                        価格-{{ product.price }}
+                    </div>
+                </a>
+                </div>
+            </div>
+            {% empty %}
+                No results found
+            {% endfor %}
+            </div>
+        </div>
+
+    </ul>
+{% else %}
+    <p>お気に入りの製品はありません。</p>
+{% endif %}
+{% endblock %}
