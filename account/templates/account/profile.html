@@ -1,0 +1,27 @@
+{% extends '../search_app/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">{{user.username}}の商品</h1>
+
+<ul class="list-group">
+    {% for product in userproducts %}
+
+    {% if product.createuser == user %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        <a href="{% url 'search_app:product_detail' product.id %}" class="text-dark">
+        <div>
+            <h5>{{ product.name }}</h5>
+            <p>{{ product.price }}円</p>
+        </div>
+        </a>
+    </li>
+
+    {% else %}
+
+    {% endif %}
+
+    {% endfor %}
+</ul>
+</div>
+{% endblock content %}

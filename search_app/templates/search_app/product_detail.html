@@ -35,6 +35,7 @@
 							</div>
 							<p class="card-text">{{ product.description }}</p>
 							<p class="card-text"><strong>{{ product.price|floatformat:0|intcomma }}円</strong></p>
+							<a class="nav-link border-bottom border-dark" href="{% url 'account:profile' product.createuser %}">出品者</a>
 
 
 							<!-- ボタンの配置 -->

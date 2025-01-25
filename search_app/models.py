@@ -29,3 +29,11 @@ class Product(models.Model):
     
     class Meta:
         db_table="product"
+
+class chatlog(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE,)
+    text = models.TextField()
+    hostuser = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='hosted_chats')
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,related_name='participated_chats')
+    time = models.DateTimeField()

@@ -1,7 +1,8 @@
 from django.contrib.auth import login, authenticate, logout
-from django.shortcuts import render, redirect
+from django.shortcuts import render,get_object_or_404, redirect
 from .forms import SignUpForm,LoginForm
 from django.urls import reverse
+from search_app.models import Product,CustomUser
 
 def signup(request):
     if request.method == 'POST':
@@ -36,3 +37,13 @@ def logout_view(request):
     logout(request)
     #return redirect(reverse('search_app:search_view'))
     return redirect(reverse('account:login'))
+
+def profile_view(request, username=None, user_id=None):
+    if username:
+        user = get_object_or_404(CustomUser, username=username)
+    elif user_id:
+        user = get_object_or_404(CustomUser, id=user_id)
+    product = Product.objects.all()
+    
+    context = {'user': user,'userproducts':product}
+    return render(request, 'account/profile.html', context)
