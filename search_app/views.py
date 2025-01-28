@@ -20,25 +20,32 @@ def product_create(request):
 
 
 def product_detail(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    product_list = get_list_or_404(Product, category=product.category)
+    product = Product.objects.get(pk=pk)
+    product_list = Product.objects.filter(category=product.category)
     product_list_as_list = list(product_list)
 
     # 現在のproductを除外
     product_list_as_list = [p for p in product_list_as_list if p != product]
 
     if len(product_list_as_list) >= 5:
-        random_products = random.sample(product_list_as_list, min(5, len(product_list_as_list))) # リストが5件未満の場合に対応
+        random_products = random.sample(product_list_as_list, min(5, len(product_list_as_list)))
     else:
         random_products = product_list_as_list
 
-    if len(random_products)>1:
-        recommendedfirst = random_products[0]
-        recommendlist = random_products[1:]
-    else:
-        recommendedfirst = random_products[0]
+    recommendedfirst = None  # 初期値をNoneに設定
+    recommendlist = []  # 初期値を空リストに設定
+    recommendedlistempty = 0
 
-    return render(request, 'search_app/product_detail.html', {'product': product, 'recommendedfirst': recommendedfirst, 'recommendedlist':recommendlist})
+    if random_products:  # random_productsが空でない場合のみ処理
+        if len(random_products) > 1:
+            recommendedfirst = random_products[0]
+            recommendlist = random_products[1:]
+        else:
+            recommendedfirst = random_products[0]
+    else:
+        recommendedlistempty = 1
+
+    return render(request, 'search_app/product_detail.html', {'product': product, 'recommendedfirst': recommendedfirst, 'recommendedlist': recommendlist, 'recommendlistempty':recommendedlistempty})
 
 
 def product_update(request, pk):
