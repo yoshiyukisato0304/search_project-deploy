@@ -36,7 +36,6 @@ def product_detail(request, pk):
     recommendlist = []  # 初期値を空リストに設定
     recommendedlistempty = 0
 
-    print(random_products)
     if random_products:  # random_productsが空でない場合のみ処理
         if len(random_products) > 1:
             recommendedfirst = random_products[0]
