@@ -19,7 +19,7 @@
 
 	<body>
 
-		<div class="container mt-5">
+		<div class="container mt-5 w-65">
 			<div class="row justify-content-center">
 				<div class="col-md-8">
 					<!-- 商品詳細カード -->
@@ -35,8 +35,10 @@
 							</div>
 							<p class="card-text">{{ product.description }}</p>
 							<p class="card-text"><strong>{{ product.price|floatformat:0|intcomma }}円</strong></p>
-							<a class="nav-link border-bottom border-dark" href="{% url 'account:profile' product.createuser %}">出品者</a>
-
+							
+							<div class="btn btn-light border-dark mb-1">
+								<a class="text-dark" href="{% url 'account:profile' product.createuser %}">出品者</a>
+							</div>
 
 							<!-- ボタンの配置 -->
 
@@ -61,44 +63,37 @@
 				{% if recommendedlistempty == 0 %}
 				<div class="d-flex flex-column justify-content-center align-items-center my-5">
 					<h3>閲覧中の商品と同じカテゴリの商品です</h3><br>
-					<div id="carouselExample" class="carousel slide w-50" >
-					<!-- <div id="carouselExample" class="carousel slide" style="max-width: 600px;"> -->
+					<div id="carouselExample" class="carousel slide w-50">
 						<div class="carousel-inner">
 							<div class="carousel-item active">
-								<a href="{% url 'search_app:product_detail' product.id %}" class="card text-decoration-none text-dark">
-									<div class="card-title">
-										{{ recommendedfirst.name }}
-									</div>
-									<div class="card-body">
-										<div class="productimages">
-											{% if recommendedfirst.image %}
-												<img src="{{ recommendedfirst.image.url }}" alt="{{ recommendedfirst.name }}" width="50%" class="m-1 border rounded border-light">
-											{% else %}
-												<img src="{% static 'images/image.jpg' %}" alt="No image available" width="50%" class="m-1 border rounded border-light">
-											{% endif %}
+								<div class="d-flex justify-content-center align-items-center h-100">  <a href="{% url 'search_app:product_detail' product.id %}" class="card text-decoration-none text-dark">
+										<div class="card-title text-center">  {{ recommendedfirst.name }}
 										</div>
-										価格-{{ recommendedfirst.price }}
-									</div>
-								</a>
-							</div>
+										<div class="card-body text-center">  <div class="productimages d-flex justify-content-center">  {% if recommendedfirst.image %}
+													<img src="{{ recommendedfirst.image.url }}" alt="{{ recommendedfirst.name }}" width="50%" class="m-1 border rounded border-light">
+												{% else %}
+													<img src="{% static 'images/image.jpg' %}" alt="No image available" width="50%" class="m-1 border rounded border-light">
+												{% endif %}
+											</div>
+											価格-{{ recommendedfirst.price }}
+										</div>
+									</a>
+								</div>  </div>
 							{% for recommendedproduct in recommendedlist %}
 							<div class="carousel-item">
-								<a href="{% url 'search_app:product_detail' product.id %}" class="card text-decoration-none text-dark">
-									<div class="card-title">
-										{{ recommendedproduct.name }}
-									</div>
-									<div class="card-body">
-										<div class="productimages">
-											{% if recommendedproduct.image %}
-												<img src="{{ recommendedproduct.image.url }}" alt="{{ recommendedfirst.name }}" width="50%" class="m-1 border rounded border-light">
-											{% else %}
-												<img src="{% static 'images/image.jpg' %}" alt="No image available" width="50%" class="m-1 border rounded border-light">
-											{% endif %}
+								<div class="d-flex justify-content-center align-items-center h-100">  <a href="{% url 'search_app:product_detail' product.id %}" class="card text-decoration-none text-dark">
+										<div class="card-title text-center">  {{ recommendedproduct.name }}
 										</div>
-										価格-{{ recommendedproduct.price }}
-									</div>
-								</a>
-							</div>
+										<div class="card-body text-center">  <div class="productimages d-flex justify-content-center">  {% if recommendedproduct.image %}
+													<img src="{{ recommendedproduct.image.url }}" alt="{{ recommendedfirst.name }}" width="50%" class="m-1 border rounded border-light">
+												{% else %}
+													<img src="{% static 'images/image.jpg' %}" alt="No image available" width="50%" class="m-1 border rounded border-light">
+												{% endif %}
+											</div>
+											価格-{{ recommendedproduct.price }}
+										</div>
+									</a>
+								</div>  </div>
 							{% endfor %}
 						</div>
 						<button class="carousel-control-prev btn btn-light" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">

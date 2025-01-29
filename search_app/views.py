@@ -40,12 +40,13 @@ def product_detail(request, pk):
         if len(random_products) > 1:
             recommendedfirst = random_products[0]
             recommendlist = random_products[1:]
-        else:
+        elif len(random_products) ==1 :
             recommendedfirst = random_products[0]
-    else:
-        recommendedlistempty = 1
+        else:
+            recommendedlistempty = 1
 
-    return render(request, 'search_app/product_detail.html', {'product': product, 'recommendedfirst': recommendedfirst, 'recommendedlist': recommendlist, 'recommendlistempty':recommendedlistempty})
+
+    return render(request, 'search_app/product_detail.html', {'product': product, 'recommendedfirst': recommendedfirst, 'recommendedlist': recommendlist, 'recommendedlistempty':recommendedlistempty})
 
 
 def product_update(request, pk):
@@ -90,7 +91,7 @@ def search_view(request):
     if category_name:
         try:
     # カテゴリ名に基づいてカテゴリ ID を取得
-            category = Category.objects.get(name=category_name)
+            category = Category.objects.get(id=category_name)
             results = results.filter(category_id=category.id)
         except Category.DoesNotExist:
             results = results.none() # 存在しないカテゴリの場合、結果を空にする
