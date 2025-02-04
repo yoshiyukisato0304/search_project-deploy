@@ -10,4 +10,5 @@ urlpatterns=[
 	path('logout/', auth_views.LogoutView.as_view(next_page='search_app:search_view'), name='logout'),
     #path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('profile/<str:username>/', views.profile_view, name='profile'),
+    path('chat/<str:username>/', views.profile_view, name='chat'),
 ]
